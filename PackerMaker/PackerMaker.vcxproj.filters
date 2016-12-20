@@ -16,14 +16,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="data.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="runpe.h">
+    <ClInclude Include="packer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
