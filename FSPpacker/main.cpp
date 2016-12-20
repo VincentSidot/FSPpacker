@@ -11,6 +11,7 @@ int main(int argc, char** argv)
 		std::cin.get();
 		return -1;
 	}
+	std::cout << "Successfull unpack" << std::endl;
 	RunPortableExecutable(file.buffer);
 	return 0;
 }

@@ -2,7 +2,6 @@
 #include <Windows.h> //windows api
 #include <string.h>
 #include <TlHelp32.h>
-
 struct data
 {
 	bool error = false;
@@ -11,7 +10,7 @@ struct data
 };
 
 const LPSTR sign = "FSPpacker";
-const DWORD signlen = strlen(sign);
+const DWORD signlen = 10;
 
 
 data getData()
@@ -20,7 +19,7 @@ data getData()
 	LPWSTR CurrentFilePath; //name of program
 	CurrentFilePath = new WCHAR[1024];
 	LARGE_INTEGER fileSize; // file size
-	GetModuleFileName(0, CurrentFilePath, 0); // getting filename
+	GetModuleFileName(0, CurrentFilePath, 1024); // getting filename
 	HANDLE hFile; //file
 	hFile = CreateFile(CurrentFilePath,               // file to open
 		GENERIC_READ,          // open for reading
@@ -71,7 +70,7 @@ data getData()
 		buffer = NULL;
 	} // testing fix string
 	__int64 packerSize , appSize;
-	if (ReadFile(hFile, &packerSize, sizeof(packerSize), &bytesRead, 0))
+	if (ReadFile(hFile, &packerSize, sizeof(__int64), &bytesRead, 0) == 0)
 	{
 		ret.error = true;
 		CloseHandle(hFile);
@@ -88,7 +87,7 @@ data getData()
 	pos.QuadPart = packerSize;
 	SetFilePointerEx(hFile, pos, NULL, 0);
 	byte* buffer = new byte[appSize];
-	if (ReadFile(hFile, buffer, appSize, &bytesRead, 0))
+	if (ReadFile(hFile, buffer, appSize, &bytesRead, 0) == 0)
 	{
 		ret.error = true;
 		CloseHandle(hFile);
