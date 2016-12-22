@@ -180,7 +180,7 @@ namespace Matrix
 		{
 			for (int j = 0; j < m_column; ++j)
 			{
-				rep.mult(i, j, lambda);
+				rep.mult(i, j, lambda); // mult
 			}
 		}
 	}
