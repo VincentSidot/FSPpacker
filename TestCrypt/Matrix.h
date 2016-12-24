@@ -60,16 +60,20 @@ namespace Matrix
 		}
 		inline void fill(const std::initializer_list<T> &liste)
 		{
-			T *temp = NULL;
-			temp = new T[liste.size()];
-			size_t cpt = 0;
-			for (std::initializer_list<int>::iterator i(liste.begin()); i != liste.end(); ++i) {
-				temp[cpt] = *i;
-				++cpt;
+			size_t i = 1,j = 1;
+			for (std::initializer_list<T>::iterator val(liste.begin()); val != liste.end(); ++val) 
+			{
+				if (i <= m_row)
+				{
+					this->set(i, j, *val);
+				}					
+				if (j >= m_column)
+				{
+					j = 0;
+					++i;
+				}
+				++j;
 			}
-			this->fill(temp, liste.size());
-			delete temp;
-
 		}
 		inline void disp() const {
 			for (int i = 0; i < m_row; ++i)
@@ -115,9 +119,58 @@ namespace Matrix
 		}
 		inline T& operator() (int i, int j) { if (i <= m_row && j <= m_column) return data[i - 1][j - 1]; }
 		inline const T& operator() (int i, int j) const { if (i <= m_row && j <= m_column) return data[i - 1][j - 1]; }
-
-
-
+		inline void operator+=(Matrix<m_row, m_column, T> &other)
+		{
+			for (int i = 1; i <= m_row; i++)
+			{
+				for (int j = 1; j <= m_column; j++)
+				{
+					this->add(i, j, other(i, j));
+				}
+			}
+		}
+		inline void operator-=(Matrix<m_row, m_column, T> &other)
+		{
+			for (int i = 1; i <= m_row; i++)
+			{
+				for (int j = 1; j <= m_column; j++)
+				{
+					this->sub(i, j, other(i, j));
+				}
+			}
+		}
+		inline void operator++()
+		{
+			for (int i = 1; i <= m_row; i++)
+			{
+				for (int j = 1; j <= m_column; j++)
+				{
+					this->add(i, j,T(1));
+				}
+			}
+		}
+		inline void operator--()
+		{
+			for (int i = 1; i <= m_row; i++)
+			{
+				for (int j = 1; j <= m_column; j++)
+				{
+					this->sub(i, j, T(1));
+				}
+			}
+		}
+		inline void reverse()
+		{
+			Matrix<m_row, m_column, T> temp(*this);
+			for (int i = 1; i <= m_row; i++)
+			{
+				for (int j = 1; j <= m_column; j++)
+				{
+					this->set(j, i, temp(i,j));
+				}
+			}
+		}
+		
 	private:
 		T **data;
 	};
@@ -176,13 +229,25 @@ namespace Matrix
 	inline Matrix<row, col, T> operator*(const T &lambda, const Matrix<row, col, T> &m)
 	{
 		Matrix<row, col, T> rep(m);
-		for (int i = 0; i < m_row; i++)
+		for (int i = 1; i <= row; i++)
 		{
-			for (int j = 0; j < m_column; ++j)
+			for (int j = 1; j <= col; ++j)
 			{
 				rep.mult(i, j, lambda); // mult
 			}
 		}
+		return rep;
 	}
-
+	template<int row,int col,class T>
+	inline Matrix<row, col, T> operator*(const Matrix<row, col, T> &m, const T &lambda)
+	{
+		return operator*(lambda, m);
+	}
+	template<int row, int col, class T>
+	inline Matrix<row, col, T> reverse(const Matrix<row, col, T> &other)
+	{
+		Matrix<row, col, T> rep(other);
+		rep.reverse();
+		return rep;
+	}
 }
