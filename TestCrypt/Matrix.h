@@ -170,6 +170,17 @@ namespace Matrix
 				}
 			}
 		}
+		inline T sum() const
+		{
+			T rep;
+			for (int i = 1; i <= m_row; ++i)
+			{
+				for (int j = 0; j <= m_column; ++j)
+				{
+					T += get(i, j);
+				}
+			}
+		}
 		
 	private:
 		T **data;
@@ -249,5 +260,10 @@ namespace Matrix
 		Matrix<row, col, T> rep(other);
 		rep.reverse();
 		return rep;
+	}
+	template<int row,int col,class T>
+	inline T sum(const Matrix<row, col, T> &othr)
+	{
+		return othr.sum()
 	}
 }
